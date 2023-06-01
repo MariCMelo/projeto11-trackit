@@ -1,16 +1,19 @@
 import React, { useState } from "react";
-import { PageContainer, Logo, LoginContainer, StyledLink } from "./styled";
+import { PageContainer, Logo, LoginContainer} from "./styled";
 import logo from "../../assets/logo-completa.png";
 import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../constants/baseUrl";
 import axios from "axios";
+import BeatLoader from "react-spinners/BeatLoader";
 
 export default function HomePage({ setToken }) {
+  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const login = (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const newLogin = { email, password };
 
@@ -20,6 +23,7 @@ export default function HomePage({ setToken }) {
       .then((res) => {
         console.log(res.data.token);
         setToken(res.data.token);
+        navigate('/hoje');
       })
       .catch((err) => alert(err.response.data.mesage));
   };
@@ -47,8 +51,14 @@ export default function HomePage({ setToken }) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button  data-test="login-btn" type="submit">Entrar</button>
-        <Link to="/cadastro" data-test="signup-link">
+        <button data-test="signup-btn" type="submit" disabled={isLoading}>
+          {isLoading ? (
+            <BeatLoader color="#FFFFFF" loading={isLoading} size={10} />
+          ) : (
+            "Entrar"
+          )}
+        </button>
+        <Link to="/hoje" data-test="signup-link">
           <p>Não tem uma conta? Cadastre-se!</p>
         </Link>
       </LoginContainer>

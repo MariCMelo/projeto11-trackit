@@ -1,5 +1,6 @@
 export default function Daily() {
-    return{
-        ss
+    return(
+<>oie</>
+    )
+        
     }
-}
