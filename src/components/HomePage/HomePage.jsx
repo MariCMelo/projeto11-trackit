@@ -1,31 +1,44 @@
-import React, { useState } from "react";
-import { PageContainer, Logo, LoginContainer} from "./styled";
+import React, { useContext, useState } from "react";
+import { PageContainer, Logo, LoginContainer } from "./styled";
 import logo from "../../assets/logo-completa.png";
 import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../constants/baseUrl";
 import axios from "axios";
 import BeatLoader from "react-spinners/BeatLoader";
+import { UserContext } from "../contexts/UserContext";
 
 export default function HomePage({ setToken }) {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { user, setUser } = useContext(UserContext);
+  
+  const navigate = useNavigate();
 
-  const login = (e) => {
+  const handleForm = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleLogin = (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     const newLogin = { email, password };
 
-    const promise = axios.post(`${BASE_URL}/auth/login`, newLogin);
-
-    promise
+    axios
+      .post(`${BASE_URL}/auth/login`, newLogin)
       .then((res) => {
-        console.log(res.data.token);
+        const { id, name, image, token } = res.data;
+        setIsLoading(false);
+        setUser({ id, name, image, token });
         setToken(res.data.token);
-        navigate('/hoje');
+        navigate("/hoje");
       })
-      .catch((err) => alert(err.response.data.mesage));
+      .catch((err) => {
+        setIsLoading(false);
+        console.log(user)
+        alert(err.response.data);
+      });
   };
 
   return (
@@ -33,14 +46,16 @@ export default function HomePage({ setToken }) {
       <Logo>
         <img src={logo} alt="Logo" />
       </Logo>
-      <LoginContainer onSubmit={login}>
+      <LoginContainer onSubmit={handleLogin}>
         <input
           data-test="email-input"
           placeholder="email"
+          type="email"
           name="email"
           required
+          disabled={isLoading}
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={handleForm}
         />
         <input
           data-test="password-input"
@@ -48,6 +63,7 @@ export default function HomePage({ setToken }) {
           name="password"
           type="password"
           required
+          disabled={isLoading}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
@@ -58,7 +74,7 @@ export default function HomePage({ setToken }) {
             "Entrar"
           )}
         </button>
-        <Link to="/hoje" data-test="signup-link">
+        <Link to="/cadastro" data-test="signup-link">
           <p>Não tem uma conta? Cadastre-se!</p>
         </Link>
       </LoginContainer>
