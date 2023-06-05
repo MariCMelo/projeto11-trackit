@@ -19,7 +19,7 @@ export default function HomePage() {
     event.preventDefault();
     const form = { email, password };
     setIsLoggingIn(true);
-  
+
     axios
       .post(`${BASE_URL}/auth/login`, form)
       .then(response => {
@@ -33,12 +33,12 @@ export default function HomePage() {
   }
   function loginApproved(res) {
     const { token, image: imageURL } = res.data;
-  
+
     setIsLoggingIn(false);
     setUserAccount(res.data.token);
     setToken(token);
     navigate('/hoje');
-  
+
     localStorage.setItem("token", token);
     localStorage.setItem("imageURL", imageURL);
   }
@@ -46,7 +46,7 @@ export default function HomePage() {
   function handleEmailChange(e) {
     setEmail(e.target.value);
   }
-  
+
   function handlePasswordChange(e) {
     setPassword(e.target.value);
   }
