@@ -26,6 +26,7 @@ export const DailyPageContainer = styled.div`
         color: #BABABA;
     }
     `
+
     export const ActivityContainer = styled.div`
     width: 340px;
     height: 94px;
@@ -47,6 +48,11 @@ export const DailyPageContainer = styled.div`
         margin: 5px;
       }
     `
+
+    export const Activity = styled.div`
+    
+    `
+
     export const CheckButton = styled.button`
     width: 69px;
     height: 69px;
@@ -54,4 +60,5 @@ export const DailyPageContainer = styled.div`
     font-size: 50px;
     border: none;
     border-radius: 5px;
+    
     `

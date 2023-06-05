@@ -2,12 +2,11 @@ import { FooterContainer, CLickContainer } from "./styled"
 import { Link } from "react-router-dom"
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { useContext } from "react";
-import { ProgressContext } from "../contexts/ProgressContext";
 
-export default function Footer({ posterURL, title, weekday, hour }) {
-    
-    const {progress} = useContext(ProgressContext);
+
+export default function Footer() {
+    const progress = 10
+
     return (
 
         <FooterContainer data-test="menu">
@@ -21,7 +20,7 @@ export default function Footer({ posterURL, title, weekday, hour }) {
                     width: 100,
                     marginBottom: 50,
                 }}>
-                    <Link to="/" data-test="today-link">
+                    <Link to="/hoje" data-test="today-link">
                     <CircularProgressbar
                         value={progress}
                         text="Hoje"
